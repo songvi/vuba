@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Entity\Acme;
-use Form\AcmeType;
  
 /**
  * Sample controller
@@ -41,6 +40,8 @@ class AcmeController implements ControllerProviderInterface {
         
         $em = $app['db.orm.em'];
         $entities = $em->getRepository('Entity\Acme')->findAll();
+      
+        var_dump($em->getRepository('Entity\Acme'));
 
         return $app['twig']->render('Acme/index.html.twig', array(
             'entities' => $entities
