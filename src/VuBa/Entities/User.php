@@ -8,89 +8,99 @@
 
 namespace VuBa\Entities;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * User 
- * 
- * @Entity
- * @Table(name="user")
+ * User
+ *
+ * @ORM\Entity(repositoryClass="VuBa\Repository\UserRepository")
+ * @ORM\Table(name="user")
+ *
+ *
  */
-class User implements \JsonSerializable
+class User //implements \JsonSerializable
 {
     /**
      *  @var integer
-     * 
-     *  @Column(name="id", type="integer")
-     *  @Id
-     *  @GeneratedValue(strategy="AUTO")    
+     *
+     *  @ORM\Column(name="id", type="integer")
+     *  @ORM\Id
+     *  @ORM\GeneratedValue(strategy="AUTO")
+     *
      */
+
     private $id;
-    
-    
+
+
     /**
      * @var string
-     * 
-     * @Column(name="sid", type="string", length=255)
+     *
+     * @ORM\Column(name="sid", type="string", length=255)
+     *
      */
     private $sid;
-    
-    
+
+
     /**
      * @var string
-     * 
-     * @Column(name="displayname", type="string", length=255)
+     *
+     * @ORM\Column(name="displayname", type="string", length=255)
+     *
      */
     private $display_name;
-    
+
     /**
      * @var string
-     * 
-     * @Column(name="title", type="string", length=5)
+     *
+     * @ORM\Column(name="title", type="string", length=5)
      */
     private $title;
-    
+
     /**
      * @var integer
-     * 
-     * @Column(name="sex", type="smallint")
-     */    
+     *
+     * @ORM\Column(name="sex", type="smallint")
+     */
     private $sex;
-    
+
     /**
      * @var string
-     * 
-     * @Column(name="description", type="string", length=255)
-     */      
+     *
+     * @ORM\Column(name="description", type="string", length=255)
+     *
+     */
     private $description;
 
     /**
      * @var integer
-     * 
-     * @Column(name="create_at", type="datetime")
-     */     
+     *
+     * @ORM\Column(name="create_at", type="datetime")
+     *
+     */
     private $create_at;
 
     /**
      * @var string
-     * 
-     * @Column(name="auth_source", type="string", length=255)
-     */          
+     *
+     * @ORM\Column(name="auth_source", type="string", length=255)
+     */
     private $auth_source;
-    
+
     /**
      * @var integer
-     * 
-     * @Column(name="user_type", type="smallint")
-     */           
+     *
+     * @ORM\Column(name="user_type", type="smallint")
+     */
     private $user_type;
-    
+
     /**
      * @var integer
-     * 
-     * @Column(name="is_locked", type="boolean")
-     */            
+     *
+     * @ORM\Column(name="is_locked", type="boolean")
+     */
     private $is_locked;
-            
-            
+
+
 
     /**
      * Get id
@@ -318,10 +328,10 @@ class User implements \JsonSerializable
         return $this->is_locked;
     }
 
-    public function jsonSerialize() {
+/*    public function jsonSerialize() {
         $vars = get_object_vars($this);
         unset($vars["sid"]);
         return $vars;
-    }
+    }*/
 
 }

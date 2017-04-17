@@ -10,9 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Vuba\Entities\User;
-
- 
 /**
  * Sample controller
  *
@@ -38,12 +35,14 @@ class UserController implements ControllerProviderInterface {
      *
      */
     public function index(Application $app) {
-
         $em = $app['orm.em'];
-       // var_dump($em);
+        //$test = $em->getRepository('Entities\User');
+        //var_dump($em);
         $entities = $em->getRepository('VuBa\Entities\User')->findAll();
+        $jsonContent = $app['serializer']->serialize($entities, 'json');
+
         $response = new \Symfony\Component\HttpFoundation\JsonResponse();
-        $response->setContent(json_encode($entities, JSON_NUMERIC_CHECK));
+        $response->setContent($jsonContent);
 
         $response->setStatusCode(200);
         return $response;
