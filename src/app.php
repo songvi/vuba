@@ -71,7 +71,9 @@ $app['cache']->delete('foo');
 // clear all cached variables
 $app['cache']->clear();*/
 
+
 $app->register(new Silex\Provider\SerializerServiceProvider());
+
 
 $app->register(new DoctrineOrmServiceProvider, array(
     'orm.proxies_dir' =>  '../var/cache/orm.proxies',
@@ -83,7 +85,7 @@ $app->register(new DoctrineOrmServiceProvider, array(
                 'type' => 'annotation',
                 'use_simple_annotation_reader' => false,
                 'namespace' => 'VuBa\Entities',
-                'path' => __DIR__.'/VuBa/Resources/Annotations/',
+                'path' => __DIR__.'/VuBa/Entities/',
             )
         ),
     )

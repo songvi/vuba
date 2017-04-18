@@ -1,4 +1,4 @@
 <?php
 
-//$app->mount( '/acme', new Controller\AcmeController());
+$app->mount( '/click', new Controller\ClickController());
 $app->mount( '/user', new Controller\UserController());
