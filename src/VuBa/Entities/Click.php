@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="click")
  *
   */
-class Click implements  \JsonSerializable
+class Click
 {
     /**
      *  @var integer
@@ -57,6 +57,13 @@ class Click implements  \JsonSerializable
      */
     private $created_at;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="modified_at", type="datetimetz", nullable=false)
+     */
+    private $modified_at;
 
     /**
      * @var string
@@ -162,6 +169,22 @@ class Click implements  \JsonSerializable
      * @ORM\OneToMany(targetEntity="ClickProposal", mappedBy="click")
      */
     private $proposals;
+
+
+
+    public function jsonSerializePublicLight()
+    {
+        $ret = array();
+        $ret['id'] = $this->getId();
+        $ret['subject'] = $this->getSubject();
+        $ret['description'] = $this->getDescription();
+        $ret['budget'] = $this->getBudget();
+        $ret['create_at'] = $this->getCreatedAt();
+        return $ret;
+    }
+
+
+
 
     /**
      * Constructor
@@ -599,9 +622,4 @@ class Click implements  \JsonSerializable
         return $this->clarification;
     }
 
-    public function jsonSerialize()
-    {
-        $all = get_object_vars($this);
-        return $all;
-    }
 }

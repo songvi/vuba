@@ -38,13 +38,14 @@ class ClickController implements ControllerProviderInterface {
         $em = $app['orm.em'];
         //$test = $em->getRepository('Entities\User');
         //var_dump($em);
-        $entities = $em->getRepository('VuBa\Entities\Click')->findAll();
+        $entities = $em->getRepository('VuBa\Entities\Click')->findOneById(1);
         //$jsonContent = $app['serializer']->serialize($entities, 'json');
 //var_dump($entities);
         //$jsonContent = array();
+        $ret = $entities->jsonSerializePublicLight();
 
         $response = new \Symfony\Component\HttpFoundation\JsonResponse();
-        $response->setContent(json_encode($entities));
+        $response->setContent(json_encode($ret));
 
         $response->setStatusCode(200);
         return $response;
