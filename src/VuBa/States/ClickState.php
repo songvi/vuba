@@ -30,9 +30,4 @@ class ClickState
     {
 
     }
-
-    public function nextState(ClickContextState $clickContextState)
-    {
-        $clickContextState.setState(this);
-    }
 }
