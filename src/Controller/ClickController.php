@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use VuBa\Serialize\ClickSerializer;
+use VuBa\States\ClickFactory;
 
 /**
  * Click controller
@@ -39,10 +41,19 @@ class ClickController implements ControllerProviderInterface {
         //$test = $em->getRepository('Entities\User');
         //var_dump($em);
         $entities = $em->getRepository('VuBa\Entities\Click')->findOneById(1);
+
+        //var_dump($entities);
+        $clickFactory = new ClickFactory($entities);
+
+        $clickState = $clickFactory->getClick();
+
+        $clickToJson = new ClickSerializer($clickState);
+
+
         //$jsonContent = $app['serializer']->serialize($entities, 'json');
 //var_dump($entities);
         //$jsonContent = array();
-        $ret = $entities->jsonSerializePublicLight();
+        $ret = $clickToJson;
 
 
         $response = new \Symfony\Component\HttpFoundation\JsonResponse();

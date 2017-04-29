@@ -1,5 +1,6 @@
 <?php
-namespace VuBa\State;
+namespace VuBa\States;
+
 use VuBa\Context\IContext;
 use VuBa\States\ClickState;
 use VuBa\States\State;

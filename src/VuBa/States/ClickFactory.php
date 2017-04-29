@@ -1,6 +1,6 @@
 <?php
 
-namespace VuBa\State;
+namespace VuBa\States;
 
 use VuBa\States\ClickCloseForNegociation;
 use VuBa\States\ClickFinished;
@@ -70,6 +70,6 @@ class ClickFactory
     }
 
     public function getClick(){
-        return $this->getClick();
+        return $this->state;
     }
 }
