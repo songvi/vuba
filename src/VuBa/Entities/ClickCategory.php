@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  *
  */
-class ClickCategory
+class ClickCategory implements \JsonSerializable
 {
     /**
      *  @var integer
@@ -29,7 +29,7 @@ class ClickCategory
      *
      */
 
-    private $name;
+    public $name;
 
     /**
      * @ORM\OneToMany(targetEntity="Click", mappedBy="category_id")
@@ -43,7 +43,7 @@ class ClickCategory
      *
      */
 
-    private $parent;
+    public $parent;
 
 
     /**
@@ -119,5 +119,16 @@ class ClickCategory
     public function getClicks()
     {
         return $this->clicks;
+    }
+
+    public function jsonSerialize ()
+    {
+        $ret = array(
+            'name' => $this->name,
+            'parent' => $this->parent
+         );
+
+
+        return json_encode($ret);
     }
 }

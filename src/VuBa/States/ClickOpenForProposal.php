@@ -2,7 +2,8 @@
 
 namespace VuBa\States;
 
-use VuBa\State\ClickState;
+use VuBa\States\State;
+use \VuBa\Entities\ClickProposal;
 
 class ClickOpenForProposal extends ClickState
 {
@@ -11,8 +12,8 @@ class ClickOpenForProposal extends ClickState
         $ret = array(
             'id',
             'subject',
-            'create_at',
-            'modify_at',
+            'created_at',
+            'modified_at',
             'expired_at',
             'description',
             'clarification',
@@ -74,7 +75,7 @@ class ClickOpenForProposal extends ClickState
      * @return $this
      *
      */
-    public function addProposal(\VuBa\Entities\ClickProposal $proposal)
+    public function addProposal(ClickProposal $proposal)
     {
         $this->getClick()->addProposal($proposal);
         return $this;
@@ -90,7 +91,7 @@ class ClickOpenForProposal extends ClickState
         $this->getClick()->setAcceptedProposal($proposalId);
 
         // Change state
-        $this->getClick()->setState(\VuBa\States\State::CLOSE_FOR_NEGOCIATION);
+        $this->getClick()->setState(State::CLOSE_FOR_NEGOCIATION);
         return $this;
     }
 

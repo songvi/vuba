@@ -11,8 +11,8 @@ class ClickCloseForNegociation extends ClickState
         $ret = array(
             'id',
             'subject',
-            'create_at',
-            'modify_at',
+            'created_at',
+            'modified_at',
             'expired_at',
             'description',
             'clarification',
