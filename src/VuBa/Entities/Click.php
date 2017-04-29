@@ -165,21 +165,36 @@ class Click
      */
     private $accepted_proposal;
 
+
     /**
      * @ORM\OneToMany(targetEntity="ClickProposal", mappedBy="click")
      */
     private $proposals;
 
-    public function jsonSerializePublicLight()
-    {
-        $ret = array();
-        $ret['id'] = $this->getId();
-        $ret['subject'] = $this->getSubject();
-        $ret['description'] = $this->getDescription();
-        $ret['budget'] = $this->getBudget();
-        $ret['create_at'] = $this->getCreatedAt();
-        return $ret;
-    }
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="finished_owner_comments", type="text", nullable=true)
+     *
+     */
+    private $finished_owner_comments;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="$finished_worker_comments", type="text", nullable=true)
+     *
+     */
+    private $finished_worker_comments;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="$finished_admin_comments", type="text", nullable=true)
+     *
+     */
+    private $finished_admin_comments;
+
 
     /**
      * Constructor
@@ -617,4 +632,153 @@ class Click
         return $this->clarification;
     }
 
+    /**
+     * Get modified
+     */
+    public function getModifiedAt()
+    {
+        return $this->modified_at;
+    }
+
+    /**
+     * ===================================
+     */
+
+    /**
+     * @param array $attributes
+     * @return array
+     */
+    public function getByAttributes(array $attributes){
+        if(empty($attributes)) return [];
+
+        $ret = [];
+        foreach($attributes as $attribute)
+        {
+            $att = strtolower($attribute);
+            switch($att)
+            {
+                case 'id':
+                    $ret[$att] = $this->getId();
+                    break;
+                case 'uuid':
+                    $ret[$att] = $this->getUuid();
+                    break;
+                case 'subject':
+                    $ret[$att] = $this->getSubject();
+                    break;
+                case 'created_at':
+                    $ret[$att] = $this->getCreatedAt();
+                    break;
+                case 'modified_at':
+                    $ret[$att] = $this->getModifiedAt();
+                    break;
+                case 'expired_at':
+                    $ret[$att] = $this->getExpiredAt();
+                    break;
+                case 'description':
+                    $ret[$att] = $this->getDescription();
+                    break;
+                case 'clarification':
+                    $ret[$att] = $this->getClarification();
+                    break;
+                case 'click_type':
+                    $ret[$att] = $this->getClickType();
+                    break;
+                case 'category':
+                    $ret[$att] = $this->getCategory();
+                    break;
+                case 'is_private':
+                    $ret[$att] = $this->getIsPrivate();
+                    break;
+                case 'priority':
+                    $ret[$att] = $this->getPriority();
+                    break;
+                case 'budget':
+                    $ret[$att] = $this->getBudget();
+                    break;
+                case 'attachments':
+                    $ret[$att] = $this->getAttachments();
+                    break;
+                case 'accepted_proposal':
+                    $ret[$att] = $this->getAcceptedProposal();
+                    break;
+                case 'proposals':
+                    $ret[$att] = $this->getProposals();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return $ret;
+    }
+
+    public function setByAttributes(array $attributes){
+        if(empty($attributes)) return [];
+
+        foreach($attributes as $attribute => $value)
+        {
+            $att = strtolower($attribute);
+            switch($att)
+            {
+                case 'id':
+                    // do nothing
+                    break;
+                case 'uuid':
+                    // do nothing
+                    break;
+                case 'subject':
+                    $this->setSubject($value);
+                    break;
+                case 'created_at':
+                    // no nothing
+                    break;
+                case 'modified_at':
+                    // do nothing
+                    break;
+                case 'expired_at':
+                    $this->setExpiredAt($value);
+                    break;
+                case 'description':
+                    $this->setDescription($value);
+                    break;
+                case 'clarification':
+                    $this->setClarification($value);
+                    break;
+                case 'click_type':
+                    $this->setClickType($value);
+                    break;
+                case 'category':
+                    $this->setCategory($value);
+                    break;
+                case 'is_private':
+                    $this->setIsPrivate($value);
+                    break;
+                case 'priority':
+                    $this->setPriority($value);
+                    break;
+                case 'budget':
+                    $this->setBudget($value);
+                    break;
+                case 'attachments':
+                    $this->setAttachments($value);
+                    break;
+                case 'accepted_proposal':
+                    $this->setAcceptedProposal($value);
+                    break;
+                case 'proposals':
+                    $this->addProposal($value);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public function isFunded()
+    {
+        // TODO
+        // call payment service
+        return false;
+    }
 }

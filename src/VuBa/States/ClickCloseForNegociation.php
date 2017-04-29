@@ -2,9 +2,9 @@
 
 namespace VuBa\States;
 
-use VuBa\State\ClickState;
+use VuBa\States\ClickState;
 
-class ClickOpenForProposal extends ClickState
+class ClickCloseForNegociation extends ClickState
 {
     public function getReadableAttributes()
     {
@@ -29,10 +29,7 @@ class ClickOpenForProposal extends ClickState
     public function getWritableAttributes()
     {
         $ret = array(
-            'clarification',
-            'click_type',
-            'category',
-            'attachments'
+            'expired_at'
         );
         return $ret;
     }
@@ -42,11 +39,11 @@ class ClickOpenForProposal extends ClickState
         $ret    = array(
             'getClickAttributes',
             'setClickAttributes',
-            'addProposal',
-            'acceptProposal',
             'reOpenForProposal',
-            'acceptProposal',
-            'close'
+            'close',
+            'requestForFund',
+            'goInProcessing',
+            'requestForUserCertification'
         );
 
         return $ret;
@@ -69,29 +66,19 @@ class ClickOpenForProposal extends ClickState
         return $this->getClick()->setByAttributes($writableAttributes);
     }
 
-    /**
-     * @param \VuBa\Entities\ClickProposal $proposal
-     * @return $this
-     *
-     */
-    public function addProposal(\VuBa\Entities\ClickProposal $proposal)
+    public function requestForFund()
     {
-        $this->getClick()->addProposal($proposal);
-        return $this;
+        $this->getClick()->setState(State::CLOSE_FUND_REQUEST);
     }
 
-    /**
-     * @param $proposalId
-     * @return $this
-     */
-    public function acceptProposal($proposalId)
+    public function requestForUserCertification()
     {
-        // Select proposal
-        $this->getClick()->setAcceptedProposal($proposalId);
+        $this->getClick()->setState(State::CLOSE_REQUEST_USER_CERTIFICATION);
+    }
 
-        // Change state
-        $this->getClick()->setState(\VuBa\States\State::CLOSE_FOR_NEGOCIATION);
-        return $this;
+    public function goInProcessing()
+    {
+        $this->getClick()->setState(State::INPROCESSING);
     }
 
     public function reOpenForProposal()

@@ -11,6 +11,8 @@ interface IContext
 
     public function getUserId();
 
+    public function getUuid();
+
     /**
     * - api
     * - web

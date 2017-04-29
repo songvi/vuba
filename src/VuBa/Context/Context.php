@@ -34,6 +34,11 @@ class Context implements IContext
         return $this->userId;
     }
 
+    public function getUuid()
+    {
+        // TODO
+        return ;
+    }
     public function setUserId($userId)
     {
         $this->userId = $userId;

@@ -28,5 +28,9 @@ class State
 
     const   FINISHED_WAIT_FOR_CONFIRMATION_ADMIN = 10;
 
+    const   CLOSE_USER_REJECT   = 11;
+
+    const   FUND_TRANSFER_REQUEST = 12;
+
     const   FINISHED = 100;
 }

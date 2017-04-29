@@ -2,9 +2,7 @@
 
 namespace VuBa\States;
 
-use VuBa\State\ClickState;
-
-class ClickOpenForProposal extends ClickState
+class ClickWaitForFund extends ClickState
 {
     public function getReadableAttributes()
     {
@@ -21,7 +19,10 @@ class ClickOpenForProposal extends ClickState
             'priority',
             'budget',
             'attachments',
-            'proposals'
+            'proposals',
+            '$finished_owner_comments',
+            '$finished_worker_comments',
+            '$finished_admin_comments'
         );
         return $ret;
     }
@@ -29,10 +30,7 @@ class ClickOpenForProposal extends ClickState
     public function getWritableAttributes()
     {
         $ret = array(
-            'clarification',
-            'click_type',
-            'category',
-            'attachments'
+            //'category'
         );
         return $ret;
     }
@@ -42,10 +40,7 @@ class ClickOpenForProposal extends ClickState
         $ret    = array(
             'getClickAttributes',
             'setClickAttributes',
-            'addProposal',
-            'acceptProposal',
             'reOpenForProposal',
-            'acceptProposal',
             'close'
         );
 
@@ -67,31 +62,6 @@ class ClickOpenForProposal extends ClickState
         $writableAttributes = array_intersect($this->getWritableAttributes(),
             $attributes);
         return $this->getClick()->setByAttributes($writableAttributes);
-    }
-
-    /**
-     * @param \VuBa\Entities\ClickProposal $proposal
-     * @return $this
-     *
-     */
-    public function addProposal(\VuBa\Entities\ClickProposal $proposal)
-    {
-        $this->getClick()->addProposal($proposal);
-        return $this;
-    }
-
-    /**
-     * @param $proposalId
-     * @return $this
-     */
-    public function acceptProposal($proposalId)
-    {
-        // Select proposal
-        $this->getClick()->setAcceptedProposal($proposalId);
-
-        // Change state
-        $this->getClick()->setState(\VuBa\States\State::CLOSE_FOR_NEGOCIATION);
-        return $this;
     }
 
     public function reOpenForProposal()

@@ -1,10 +1,12 @@
 <?php
 namespace VuBa\State;
+use VuBa\Context\IContext;
 use VuBa\States\ClickState;
+use VuBa\States\State;
 
 class ClickStart extends ClickState
 {
-    public function getAllowedAttributes()
+    public function getReadableAttributes()
     {
         $ret = array(
             'id',
@@ -23,11 +25,27 @@ class ClickStart extends ClickState
         return $ret;
     }
 
+    public function getWritableAttributes()
+    {
+        $ret = array(
+            'subject',
+            'expired_at',
+            'description',
+            'clarification',
+            'click_type',
+            'category',
+            'budget',
+            'attachments'
+        );
+        return $ret;
+    }
+
     public function getAllowedFunctions()
     {
         $ret    = array(
-            //'getdetail',
-            //'getclick'
+            'getClickAttributes',
+            'setClickAttributes',
+            'publishForProposal'
         );
 
         return $ret;
@@ -51,4 +69,32 @@ class ClickStart extends ClickState
         }
     }
     */
+
+    public function publishForProposal(IContext $context)
+    {
+        $this->getClick()->setState(State::CLOSE_FOR_NEGOCIATION);
+
+        // TODO Save
+        // TODO invalid cache
+        // TODO notify
+
+        return $this;
+    }
+
+    public function getClickAttributes($returnAttributes = array())
+    {
+        if(empty($returnAttributes)) return [];
+        $readableAttributes = array_intersect($this->getReadableAttributes(),
+                                                $returnAttributes);
+        return $this->getClick()->getByAttributes($readableAttributes);
+    }
+
+    public function setClickAttributes($attributes = array())
+    {
+        if(empty($attributes)) return [];
+
+        $writableAttributes = array_intersect($this->getReadableAttributes(),
+                                                $attributes);
+        return $this->getClick()->setByAttributes($writableAttributes);
+    }
 }

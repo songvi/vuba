@@ -2,9 +2,7 @@
 
 namespace VuBa\States;
 
-use VuBa\State\ClickState;
-
-class ClickOpenForProposal extends ClickState
+class ClickWaitForFund extends ClickState
 {
     public function getReadableAttributes()
     {
@@ -29,10 +27,7 @@ class ClickOpenForProposal extends ClickState
     public function getWritableAttributes()
     {
         $ret = array(
-            'clarification',
-            'click_type',
-            'category',
-            'attachments'
+            //'category'
         );
         return $ret;
     }
@@ -42,11 +37,10 @@ class ClickOpenForProposal extends ClickState
         $ret    = array(
             'getClickAttributes',
             'setClickAttributes',
-            'addProposal',
-            'acceptProposal',
             'reOpenForProposal',
-            'acceptProposal',
-            'close'
+            'close',
+            'requestForUserCertification',
+            'goInProcessing'
         );
 
         return $ret;
@@ -69,31 +63,6 @@ class ClickOpenForProposal extends ClickState
         return $this->getClick()->setByAttributes($writableAttributes);
     }
 
-    /**
-     * @param \VuBa\Entities\ClickProposal $proposal
-     * @return $this
-     *
-     */
-    public function addProposal(\VuBa\Entities\ClickProposal $proposal)
-    {
-        $this->getClick()->addProposal($proposal);
-        return $this;
-    }
-
-    /**
-     * @param $proposalId
-     * @return $this
-     */
-    public function acceptProposal($proposalId)
-    {
-        // Select proposal
-        $this->getClick()->setAcceptedProposal($proposalId);
-
-        // Change state
-        $this->getClick()->setState(\VuBa\States\State::CLOSE_FOR_NEGOCIATION);
-        return $this;
-    }
-
     public function reOpenForProposal()
     {
         $this->getClick()->setState(State::OPEN_FOR_PROPOSAL);
@@ -102,5 +71,15 @@ class ClickOpenForProposal extends ClickState
     public function close()
     {
         $this->getClick()->setState(State::FINISHED);
+    }
+
+    public function requestForUserCertification()
+    {
+        $this->getClick()->setState(State::CLOSE_REQUEST_USER_CERTIFICATION);
+    }
+
+    public function goInProcessing()
+    {
+        $this->getClick()->setState(State::INPROCESSING);
     }
 }
