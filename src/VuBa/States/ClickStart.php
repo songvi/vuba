@@ -26,11 +26,14 @@ class ClickStart extends ClickState
     public function getAllowedFunctions()
     {
         $ret    = array(
-            'getdetail',
-            'getclick'
+            //'getdetail',
+            //'getclick'
         );
+
+        return $ret;
     }
 
+    /*
     public function getDetail($format)
     {
         return parent::getDetail($format);
@@ -47,4 +50,5 @@ class ClickStart extends ClickState
             }
         }
     }
+    */
 }
