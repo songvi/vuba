@@ -5,7 +5,7 @@ namespace VuBa\Serialize;
 
 use VuBa\States\ClickState;
 
-class ClickSerializer
+class ClickSerializer implements \JsonSerializable
 {
     /**
      * @var ClickState
@@ -17,7 +17,7 @@ class ClickSerializer
         $this->clickState = $clickState;
     }
 
-    public function toJson(){
+    public function jsonSerialize(){
         $readableAtt = $this->clickState->getClick()->getByAttributes(
             $this->clickState->getReadableAttributes());
 
@@ -34,7 +34,7 @@ class ClickSerializer
             'funcs'        => $funcLinks
         );
 
-        return json_encode($ret);
+        return $ret;
     }
 
     public function toArray(){

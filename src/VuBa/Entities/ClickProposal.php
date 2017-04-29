@@ -287,4 +287,6 @@ class ClickProposal
     {
         return $this->click;
     }
+
+
 }

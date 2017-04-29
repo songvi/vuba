@@ -128,7 +128,6 @@ class ClickCategory implements \JsonSerializable
             'parent' => $this->parent
          );
 
-
         return json_encode($ret);
     }
 }

@@ -182,7 +182,7 @@ class Click
     /**
      * @var string
      *
-     * @ORM\Column(name="$finished_worker_comments", type="text", nullable=true)
+     * @ORM\Column(name="finished_worker_comments", type="text", nullable=true)
      *
      */
     private $finished_worker_comments;
@@ -190,7 +190,7 @@ class Click
     /**
      * @var string
      *
-     * @ORM\Column(name="$finished_admin_comments", type="text", nullable=true)
+     * @ORM\Column(name="finished_admin_comments", type="text", nullable=true)
      *
      */
     private $finished_admin_comments;
@@ -780,5 +780,96 @@ class Click
         // TODO
         // call payment service
         return false;
+    }
+
+    /**
+     * Set modifiedAt
+     *
+     * @param \DateTime $modifiedAt
+     *
+     * @return Click
+     */
+    public function setModifiedAt($modifiedAt)
+    {
+        $this->modified_at = $modifiedAt;
+
+        return $this;
+    }
+
+    /**
+     * Set finishedOwnerComments
+     *
+     * @param string $finishedOwnerComments
+     *
+     * @return Click
+     */
+    public function setFinishedOwnerComments($finishedOwnerComments)
+    {
+        $this->finished_owner_comments = $finishedOwnerComments;
+
+        return $this;
+    }
+
+    /**
+     * Get finishedOwnerComments
+     *
+     * @return string
+     */
+    public function getFinishedOwnerComments()
+    {
+        return $this->finished_owner_comments;
+    }
+
+    /**
+     * Set finishedWorkerComments
+     *
+     * @param string $finishedWorkerComments
+     *
+     * @return Click
+     */
+    public function setFinishedWorkerComments($finishedWorkerComments)
+    {
+        $this->finished_worker_comments = $finishedWorkerComments;
+
+        return $this;
+    }
+
+    /**
+     * Get finishedWorkerComments
+     *
+     * @return string
+     */
+    public function getFinishedWorkerComments()
+    {
+        return $this->finished_worker_comments;
+    }
+
+    /**
+     * Set finishedAdminComments
+     *
+     * @param string $finishedAdminComments
+     *
+     * @return Click
+     */
+    public function setFinishedAdminComments($finishedAdminComments)
+    {
+        $this->finished_admin_comments = $finishedAdminComments;
+
+        return $this;
+    }
+
+    /**
+     * Get finishedAdminComments
+     *
+     * @return string
+     */
+    public function getFinishedAdminComments()
+    {
+        return $this->finished_admin_comments;
+    }
+
+    public function getIdCache()
+    {
+        return 'click'.$this->id;
     }
 }
