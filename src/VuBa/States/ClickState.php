@@ -2,10 +2,7 @@
 
 namespace VuBa\States;
 
-use VuBa\Context\Context;
-use Vuba\States\State;
 use VuBa\Entities\Click;
-use VuBa\States\ClickContextState;
 
 class ClickState
 {
@@ -35,17 +32,14 @@ class ClickState
 
     public function getWritableAttributes()
     {
-        return $this;
+        return array();
     }
     public function getAllowedFunctions()
     {
         return array();
     }
 
-    public function getRawDetail(array $attributes)
-    {
-        return array();
-    }
+
 
     public function setClickAttributes($attributes = array())
     {
@@ -55,11 +49,5 @@ class ClickState
     public function getClickAttributes($returnAttributes = array())
     {
 
-    }
-
-    public function publishForProposal(IContext $context)
-    {
-        $this->getClick()->setState(State::OPEN_FOR_PROPOSAL);
-        return $this;
     }
 }

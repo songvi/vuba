@@ -4,6 +4,12 @@ use VuBa\Context\IContext;
 use VuBa\States\ClickState;
 use VuBa\States\State;
 
+/**
+ * Class ClickStart
+ * @package VuBa\State
+ *
+ * Start or open for proposal
+ */
 class ClickStart extends ClickState
 {
     public function getReadableAttributes()

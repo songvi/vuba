@@ -2,7 +2,7 @@
 
 namespace VuBa\States;
 
-class ClickWaitForFund extends ClickState
+class ClickFinished extends ClickState
 {
     public function getReadableAttributes()
     {
