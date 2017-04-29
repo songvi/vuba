@@ -21,9 +21,7 @@ class ClickSerializer
         $readableAtt = $this->clickState->getClick()->getByAttributes(
             $this->clickState->getReadableAttributes());
 
-        $writableAtt = $this->clickState->getClick()->setByAttributes(
-            $this->clickState->getWritableAttributes()
-        );
+        $writableAtt = $this->clickState->getWritableAttributes();
 
         $funcs = $this->clickState->getAllowedFunctions();
 
@@ -36,6 +34,26 @@ class ClickSerializer
             'funcs'        => $funcLinks
         );
 
-        return json_encode($ret, JSON_PRETTY_PRINT);
+        return json_encode($ret);
+    }
+
+    public function toArray(){
+        $readableAtt = $this->clickState->getClick()->getByAttributes(
+            $this->clickState->getReadableAttributes());
+
+        $writableAtt = $this->clickState->getWritableAttributes();
+
+        $funcs = $this->clickState->getAllowedFunctions();
+
+        // TODO translated $funcs to ref
+        $funcLinks = $funcs;
+
+        $ret = array(
+            'readable_att' => $readableAtt,
+            'writable_att' => $writableAtt,
+            'funcs'        => $funcLinks
+        );
+
+        return $ret;
     }
 }

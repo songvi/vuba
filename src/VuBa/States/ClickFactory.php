@@ -26,6 +26,7 @@ class ClickFactory
     public function __construct(Click $click)
     {
         if(!($click instanceof Click)) return;
+        //var_dump($click->getState());
         switch($click->getState())
         {
             case State::OPEN_FOR_PROPOSAL:
