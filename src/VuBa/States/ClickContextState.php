@@ -3,6 +3,7 @@
 namespace VuBa\State;
 use VuBa\States\ClickState;
 use VuBa\Context\IContext;
+use VuBa\Entities\Click;
 
 class ClickContextState
 {

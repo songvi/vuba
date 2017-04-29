@@ -44,6 +44,7 @@ class ClickController implements ControllerProviderInterface {
         //$jsonContent = array();
         $ret = $entities->jsonSerializePublicLight();
 
+
         $response = new \Symfony\Component\HttpFoundation\JsonResponse();
         $response->setContent(json_encode($ret));
 

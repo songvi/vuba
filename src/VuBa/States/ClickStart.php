@@ -17,13 +17,34 @@ class ClickStart extends ClickState
             'click_type',
             'category',
             'priority',
-            'budget'
+            'budget',
+            'attachments'
         );
         return $ret;
     }
 
     public function getAllowedFunctions()
     {
+        $ret    = array(
+            'getdetail',
+            'getclick'
+        );
+    }
 
+    public function getDetail($format)
+    {
+        return parent::getDetail($format);
+    }
+
+    public function getClick($returnAttributes = array())
+    {
+        $ret = array();
+        foreach($returnAttributes as $attribute)
+        {
+            if(in_array($attribute, $this->getAllowedAttributes()))
+            {
+                $ret[$attribute] = $this->getRawDetail()[$attribute];
+            }
+        }
     }
 }

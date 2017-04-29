@@ -170,8 +170,6 @@ class Click
      */
     private $proposals;
 
-
-
     public function jsonSerializePublicLight()
     {
         $ret = array();
@@ -182,9 +180,6 @@ class Click
         $ret['create_at'] = $this->getCreatedAt();
         return $ret;
     }
-
-
-
 
     /**
      * Constructor
