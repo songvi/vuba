@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  *
  */
-class ClickAttachment
+class ClickAttachment implements  \JsonSerializable
 {
     /**
      *  @var integer
@@ -229,5 +229,24 @@ class ClickAttachment
     public function getClick()
     {
         return $this->click;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize()
+    {
+        $ret = array(
+            'id' => $this->id,
+            'name' => $this->name,
+            'path' => $this->path,
+            'created_at' => $this->upload_at
+        );
+
+        return $ret;
     }
 }

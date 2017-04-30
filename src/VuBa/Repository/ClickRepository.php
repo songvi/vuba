@@ -10,4 +10,12 @@ namespace VuBa\Repository;
  */
 class ClickRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function countClick()
+    {
+        return $this->createQueryBuilder('countclick')
+            ->select('COUNT(countclick)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+    }
 }

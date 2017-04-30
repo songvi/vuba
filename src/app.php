@@ -93,6 +93,7 @@ $app->register(new DoctrineOrmServiceProvider, array(
 
 
 
+
 require __DIR__.'/routes.php';
 
 return $app;

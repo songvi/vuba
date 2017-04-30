@@ -144,7 +144,7 @@ class Click
     /**
      * @var float
      *
-     * @ORM\Column(name="budget", type="decimal", precision=2, scale=1)
+     * @ORM\Column(name="budget", type="decimal", precision=10, scale=2)
      */
     private $budget = 0.00;
 

@@ -4,6 +4,7 @@ namespace VuBa\Serialize;
 
 
 use VuBa\States\ClickState;
+use VuBa\Utilities\StringHelper;
 
 class ClickSerializer implements \JsonSerializable
 {
@@ -34,6 +35,7 @@ class ClickSerializer implements \JsonSerializable
             'funcs'        => $funcLinks
         );
 
+        $ret = StringHelper::utf8_converter($ret);
         return $ret;
     }
 
@@ -54,6 +56,17 @@ class ClickSerializer implements \JsonSerializable
             'funcs'        => $funcLinks
         );
 
+        $ret = StringHelper::utf8_converter($ret);
+
+        return $ret;
+    }
+
+    public function toArrayWithAttribute(array $attributes){
+        $readableAtt = $this->clickState->getClick()->getByAttributes(
+            $this->clickState->getReadableAttributes());
+        $ret = array_intersect_key($readableAtt, array_flip($attributes));
+
+        $ret = StringHelper::utf8_converter($ret);
         return $ret;
     }
 }
