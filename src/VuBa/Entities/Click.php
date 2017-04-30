@@ -10,6 +10,7 @@ namespace VuBa\Entities;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Click
@@ -27,6 +28,8 @@ class Click
      *  @ORM\Id
      *  @ORM\GeneratedValue(strategy="AUTO")
      *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
      */
 
     private $id;
@@ -38,6 +41,11 @@ class Click
      *
      * @ORM\Column(name="uuid", type="string", length=36, options={"comment":"Global Unique User Id"}, nullable=false)
      *
+     * @Assert\NotNull()
+     * @Assert\Uuid (
+     *      message = "The uuid '{{ value }}' is not a valid uuid.",
+     *      strict = true*
+     * )
      */
     private $uuid;
 
@@ -47,6 +55,14 @@ class Click
      *
      * @ORM\Column(name="subject", type="string", length=255, options={"comment":"Subject of the post"}, nullable=false)
      *
+     * @Assert\NotNull()
+     * @Assert\Length(
+     *      min = 5,
+     *      max = 255,
+     *      minMessage = "The subject must be at least {{ limit }} characters long",
+     *      maxMessage = "The subject catnot be longer than {{ limit }} characters",
+     * )
+     *
      */
     private $subject;
 
@@ -54,6 +70,9 @@ class Click
      * @var string
      *
      * @ORM\Column(name="created_at", type="datetimetz", nullable=false)
+     *
+     * @Assert\NotNull()
+     * @Assert\DateTime()
      */
     private $created_at;
 
@@ -62,6 +81,10 @@ class Click
      * @var string
      *
      * @ORM\Column(name="modified_at", type="datetimetz", nullable=false)
+     *
+     * @Assert\NotNull()
+     * @Assert\DateTime()
+     *
      */
     private $modified_at;
 
@@ -69,6 +92,9 @@ class Click
      * @var string
      *
      * @ORM\Column(name="expired_at", type="datetimetz", nullable=true)
+     *
+     * @Assert\DateTime()
+     *
      */
     private $expired_at;
 
@@ -78,6 +104,15 @@ class Click
      *
      * @ORM\Column(name="description", type="text", options={"comment":"Detail of click"}, nullable=false)
      *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 60000,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
+     *
      */
     private $description;
 
@@ -85,6 +120,14 @@ class Click
      * @var string
      *
      * @ORM\Column(name="clarification", type="text", options={"comment":"Clarification of click"}, nullable=true)
+     *
+     *
+     * @Assert\Length(
+     *      min = 10,
+     *      max = 60000,
+     *      minMessage = "Your first name must be at least {{ limit }} characters long",
+     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     * )
      *
      */
     private $clarification;
@@ -97,6 +140,13 @@ class Click
      *
      * - 0: remote
      * - 1: sur place
+     *
+     * @Assert\NotNull()
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 1
+     *
+     * )
      */
     private $click_type = 0;
 
@@ -105,8 +155,16 @@ class Click
      * @ORM\ManyToOne(targetEntity="ClickCategory", inversedBy="clicks")
      * @ORM\JoinColumn(name="category", referencedColumnName="name")
      *
+     * @Assert\NotNull()
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 50
+     * )
+     *
      */
     private $category;
+
+
 
     /**
      * @var integer
@@ -122,6 +180,13 @@ class Click
      * - 3: in_processing
      * - 4: finished_wait_for_owner_confirmation
      * - 5: finished
+     *
+     * @Assert\NotNull()
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 100
+     * )
+     *
      */
     private $state = 0;
 
@@ -138,6 +203,11 @@ class Click
      * @var boolean
      *
      * @ORM\Column(name="priority", type="smallint")
+     *
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 100
+     * )
      */
     private $priority = 0;
 
@@ -145,9 +215,22 @@ class Click
      * @var float
      *
      * @ORM\Column(name="budget", type="decimal", precision=10, scale=2)
+     *
+     * @Assert\NotNull()
+     * @Assert\NotBlank()
+     *
      */
     private $budget = 0.00;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="currency", type="string", length=3, nullable=false)
+     *
+     * @Assert\Currency
+     *
+     */
+    private $currency = 'vnd';
 
     /**
      * @var string
@@ -162,6 +245,8 @@ class Click
      * @var integer
      *
      * @ORM\Column(name="accepted_proposal", type="integer", nullable=true)
+     *
+     *
      */
     private $accepted_proposal;
 

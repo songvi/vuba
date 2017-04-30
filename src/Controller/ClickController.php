@@ -113,7 +113,7 @@ class ClickController implements ControllerProviderInterface {
      * Show entity
      *
      */
-    public function show(Application $app, $id, Request $request) {
+    public function show(Application $app, Request $request, $id) {
 
         $em = $app['orm.em'];
 

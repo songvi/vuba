@@ -4,14 +4,14 @@ use Silex\Application;
 use Silex\Provider\RoutingServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
-//use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\FormServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\HttpFragmentServiceProvider;
 use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
-
+use Saxulum\Validator\Provider\SaxulumValidatorProvider;
+use Symfony\Component\Validator\Validator;
 
 
 $app = new Application();
@@ -91,6 +91,19 @@ $app->register(new DoctrineOrmServiceProvider, array(
     )
 ));
 
+
+$app->register(new ValidatorServiceProvider());
+$app->register(new SaxulumValidatorProvider());
+
+
+
+\Doctrine\Common\Annotations\AnnotationRegistry::registerFile(__DIR__.'/../vendor/symfony/validator/Symfony/Component/Validator/Constraints/NotNull.php');
+\Doctrine\Common\Annotations\AnnotationRegistry::registerFile(__DIR__.'/../vendor/symfony/validator/Symfony/Component/Validator/Constraints/NotBlank.php');
+\Doctrine\Common\Annotations\AnnotationRegistry::registerFile(__DIR__.'/../vendor/symfony/validator/Symfony/Component/Validator/Constraints/Uuid.php');
+\Doctrine\Common\Annotations\AnnotationRegistry::registerFile(__DIR__.'/../vendor/symfony/validator/Symfony/Component/Validator/Constraints/Length.php');
+\Doctrine\Common\Annotations\AnnotationRegistry::registerFile(__DIR__.'/../vendor/symfony/validator/Symfony/Component/Validator/Constraints/DateTime.php');
+\Doctrine\Common\Annotations\AnnotationRegistry::registerFile(__DIR__.'/../vendor/symfony/validator/Symfony/Component/Validator/Constraints/Range.php');
+\Doctrine\Common\Annotations\AnnotationRegistry::registerFile(__DIR__.'/../vendor/symfony/validator/Symfony/Component/Validator/Constraints/Currency.php');
 
 
 

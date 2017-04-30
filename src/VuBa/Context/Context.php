@@ -22,6 +22,16 @@ class Context implements IContext
     private $requestMode;
 
     private $userObject;
+
+    public $location;
+
+    public $preferedLanguage;
+
+    public $currency;
+
+    public $timezone;
+
+
     /**
     * return
     */
