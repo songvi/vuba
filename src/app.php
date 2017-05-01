@@ -107,6 +107,31 @@ $app->register(new SaxulumValidatorProvider());
 
 
 
+$app['vuba.context'] = null;
+
+/*$app['callback'] =  $app->protect(function(Application $app, Request $request){
+    $token = $request->headers->get('X-AUTH-TOKEN');
+
+    //var_dump($token);
+    if (empty($token) || false === strpos($token, ':')) {
+        $response = new \Symfony\Component\HttpFoundation\JsonResponse();
+        $response->setContent('{"Error":"Access Forbidden"}');
+        $response->setStatusCode(403);
+        // commented for dev
+        //return $response;
+    }
+
+    //list($username, $secret) = explode(':', $token, 2);
+    if(empty($token)) $token = 1;
+    //$request->query->add(array("user_public_id" => $token));
+
+    $app['vuba.context'] = $token;
+    var_dump($app['vuba.context']);
+});*/
+
+
+
 require __DIR__.'/routes.php';
+
 
 return $app;

@@ -10,6 +10,7 @@ namespace VuBa\Entities;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use VuBa\Entities\ClickCategory;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -21,6 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
   */
 class Click
 {
+    const REMOTE = 0;
+    const ONSITE = 1;
     /**
      *  @var integer
      *
@@ -80,9 +83,8 @@ class Click
     /**
      * @var string
      *
-     * @ORM\Column(name="modified_at", type="datetimetz", nullable=false)
+     * @ORM\Column(name="modified_at", type="datetimetz", nullable=true)
      *
-     * @Assert\NotNull()
      * @Assert\DateTime()
      *
      */
@@ -148,22 +150,7 @@ class Click
      *
      * )
      */
-    private $click_type = 0;
-
-
-    /**
-     * @ORM\ManyToOne(targetEntity="ClickCategory", inversedBy="clicks")
-     * @ORM\JoinColumn(name="category", referencedColumnName="name")
-     *
-     * @Assert\NotNull()
-     * @Assert\Length(
-     *      min = 2,
-     *      max = 50
-     * )
-     *
-     */
-    private $category;
-
+    private $click_type = self::REMOTE;
 
 
     /**
@@ -281,6 +268,19 @@ class Click
     private $finished_admin_comments;
 
 
+    public function initCreateTemplate($uuid)
+    {
+        //$this->accepted_proposal
+        $this->uuid = $uuid;
+        //$this->created_at = date('Y-m-d H:i:s', time());
+        $this->created_at = new \DateTime("now");
+        $this->click_type = Click::REMOTE;
+        $this->is_private = 0;
+        $this->priority = 0;
+        $this->budget = 0.0;
+        $this->setCategoryId('IT');
+    }
+
     /**
      * Constructor
      */
@@ -288,6 +288,7 @@ class Click
     {
         $this->proposals = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
 
     /**
      * Get id
@@ -670,30 +671,6 @@ class Click
     }
 
     /**
-     * Set category
-     *
-     * @param \VuBa\Entities\ClickCategory $category
-     *
-     * @return Click
-     */
-    public function setCategory(\VuBa\Entities\ClickCategory $category = null)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * Get category
-     *
-     * @return \VuBa\Entities\ClickCategory
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
      * Set clarification
      *
      * @param string $clarification
@@ -770,7 +747,7 @@ class Click
                     $ret[$att] = $this->getClickType();
                     break;
                 case 'category':
-                    $ret[$att] = $this->getCategory();
+                    $ret[$att] = $this->getCategoryId();
                     break;
                 case 'is_private':
                     $ret[$att] = $this->getIsPrivate();
@@ -822,7 +799,8 @@ class Click
                     // do nothing
                     break;
                 case 'expired_at':
-                    $this->setExpiredAt($value);
+                    $date = new \DateTime($value);
+                    $this->setExpiredAt($date);
                     break;
                 case 'description':
                     $this->setDescription($value);
@@ -834,7 +812,7 @@ class Click
                     $this->setClickType($value);
                     break;
                 case 'category':
-                    $this->setCategory($value);
+                    $this->setCategoryId($value);
                     break;
                 case 'is_private':
                     $this->setIsPrivate($value);
@@ -858,6 +836,8 @@ class Click
                     break;
             }
         }
+
+//        var_dump($this);
     }
 
     public function isFunded()
@@ -956,5 +936,29 @@ class Click
     public function getIdCache()
     {
         return 'click'.$this->id;
+    }
+
+    /**
+     * Set currency
+     *
+     * @param string $currency
+     *
+     * @return Click
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * Get currency
+     *
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
     }
 }

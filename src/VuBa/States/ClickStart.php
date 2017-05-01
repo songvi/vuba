@@ -100,8 +100,8 @@ class ClickStart extends ClickState
     {
         if(empty($attributes)) return [];
 
-        $writableAttributes = array_intersect($this->getReadableAttributes(),
-                                                $attributes);
+        $writableAttributes = array_intersect_key($attributes,
+            array_flip($this->getReadableAttributes()));
         return $this->getClick()->setByAttributes($writableAttributes);
     }
 }

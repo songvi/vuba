@@ -43,7 +43,7 @@ class ClickCategory implements \JsonSerializable
      *
      */
 
-    public $parent;
+    public $parent = "";
 
 
     /**

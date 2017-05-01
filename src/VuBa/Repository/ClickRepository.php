@@ -16,6 +16,5 @@ class ClickRepository extends \Doctrine\ORM\EntityRepository
             ->select('COUNT(countclick)')
             ->getQuery()
             ->getSingleScalarResult();
-
     }
 }
