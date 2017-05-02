@@ -10,7 +10,6 @@ namespace VuBa\Entities;
 
 
 use Doctrine\ORM\Mapping as ORM;
-use VuBa\Entities\ClickCategory;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -31,8 +30,6 @@ class Click
      *  @ORM\Id
      *  @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Assert\NotNull()
-     * @Assert\NotBlank()
      */
 
     private $id;
@@ -111,8 +108,8 @@ class Click
      * @Assert\Length(
      *      min = 10,
      *      max = 60000,
-     *      minMessage = "Your first name must be at least {{ limit }} characters long",
-     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
+     *      minMessage = "The description must be at least {{ limit }} characters long",
+     *      maxMessage = "The description cannot be longer than {{ limit }} characters"
      * )
      *
      */
@@ -123,13 +120,6 @@ class Click
      *
      * @ORM\Column(name="clarification", type="text", options={"comment":"Clarification of click"}, nullable=true)
      *
-     *
-     * @Assert\Length(
-     *      min = 10,
-     *      max = 60000,
-     *      minMessage = "Your first name must be at least {{ limit }} characters long",
-     *      maxMessage = "Your first name cannot be longer than {{ limit }} characters"
-     * )
      *
      */
     private $clarification;
@@ -205,7 +195,10 @@ class Click
      *
      * @Assert\NotNull()
      * @Assert\NotBlank()
-     *
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 1000000000
+     * )
      */
     private $budget = 0.00;
 
@@ -217,7 +210,7 @@ class Click
      * @Assert\Currency
      *
      */
-    private $currency = 'vnd';
+    private $currency = 'VND';
 
     /**
      * @var string
@@ -242,6 +235,13 @@ class Click
      * @ORM\OneToMany(targetEntity="ClickProposal", mappedBy="click")
      */
     private $proposals;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="category", type="string", nullable = false)
+     */
+    private $category;
 
     /**
      * @var string
@@ -274,11 +274,12 @@ class Click
         $this->uuid = $uuid;
         //$this->created_at = date('Y-m-d H:i:s', time());
         $this->created_at = new \DateTime("now");
+        $this->modified_at = $this->created_at;
         $this->click_type = Click::REMOTE;
         $this->is_private = 0;
         $this->priority = 0;
         $this->budget = 0.0;
-        $this->setCategoryId('IT');
+        $this->setCategory('IT');
     }
 
     /**
@@ -444,29 +445,6 @@ class Click
         return $this->click_type;
     }
 
-    /**
-     * Set categoryId
-     *
-     * @param integer $categoryId
-     *
-     * @return Click
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->category_id = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return integer
-     */
-    public function getCategoryId()
-    {
-        return $this->category_id;
-    }
 
     /**
      * Set state
@@ -747,7 +725,7 @@ class Click
                     $ret[$att] = $this->getClickType();
                     break;
                 case 'category':
-                    $ret[$att] = $this->getCategoryId();
+                    $ret[$att] = $this->getCategory();
                     break;
                 case 'is_private':
                     $ret[$att] = $this->getIsPrivate();
@@ -812,7 +790,7 @@ class Click
                     $this->setClickType($value);
                     break;
                 case 'category':
-                    $this->setCategoryId($value);
+                    $this->setCategory($value);
                     break;
                 case 'is_private':
                     $this->setIsPrivate($value);
@@ -960,5 +938,29 @@ class Click
     public function getCurrency()
     {
         return $this->currency;
+    }
+
+    /**
+     * Set category
+     *
+     * @param string $category
+     *
+     * @return Click
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return string
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 }

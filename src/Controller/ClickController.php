@@ -15,6 +15,7 @@ use VuBa\Context\Context;
 use VuBa\Entities\Click;
 use VuBa\Serialize\ClickSerializer;
 use VuBa\States\ClickFactory;
+use VuBa\Utilities\StringHelper;
 
 /**
  * Click controller
@@ -33,7 +34,7 @@ class ClickController implements ControllerProviderInterface {
         $clickController->get("/count", array($this, 'count'));
         $clickController->get("/show/{id}", array($this, 'show'));
         $clickController->post("/create", array($this, 'create'));
-        //$clickController->match("/update/{id}", array($this, 'update'))->bind('acme_update');
+        $clickController->post("/update/{id}", array($this, 'update'));
         //$clickController->get("/delete/{id}", array($this, 'delete'))->bind('acme_delete');
         return $clickController;
     }
@@ -42,6 +43,7 @@ class ClickController implements ControllerProviderInterface {
     {
 
     }
+
     /**
      * List all entities
      *
@@ -142,8 +144,6 @@ class ClickController implements ControllerProviderInterface {
             $app->abort(404, 'No entity found for id '.$id);
         }
 
-var_dump($request);
-
         $arrAttributes = $request->query->get('a');
 
         $attributes = null;
@@ -176,6 +176,7 @@ var_dump($request);
     public function create(Application $app, Request $request)
     {
         $uuid = '3F2504E0-4F89-11D3-9A0C-0305E82C3301';
+
         $test = $request->getContent();
         $newClick = new Click();
         $newClick->initCreateTemplate($uuid);
@@ -184,6 +185,7 @@ var_dump($request);
         $clickState = $clickFactory->getClick();
 
         $rawData = json_decode($test, true);
+        $rawData = StringHelper::utf8_converter($rawData);
 
         //var_dump($rawData);
         $clickState->setClickAttributes($rawData);
@@ -195,19 +197,118 @@ var_dump($request);
         //var_dump($em);
         $table = $em->getRepository('VuBa\Entities\Click');
 
-        $em->persist($clickToValidate);
-        $em->flush();
-
+        /**
+         * Validate before updating to database
+         */
+        $validator = $app['validator'];
+        $violations = $validator->validate($clickToValidate);
         $response = new \Symfony\Component\HttpFoundation\JsonResponse();
-        $clickToJson = new ClickSerializer($clickState);
-        $response->setContent(json_encode(
-            $clickToJson->toArrayWithAttribute(
-                $clickState->getReadableAttributes()
-            )));
-        $response->setStatusCode(201);
+        $errorMsg = '';
+        if (0 !== count($violations)) {
+            // there are errors, now you can show them
+            foreach ($violations as $violation) {
+                //echo $violation->getMessage().'<br>';
+                $errorMsg .= $violation->getMessage();
+            }
+            //$response->setContent(json_encode($errorMsg));
+            $response->setStatusCode(409);
+            return $response;
+        }
 
-        return $response;
+        /**
+         * Click is ready to be import to database
+         */
+        try
+        {
+            $em->persist($clickToValidate);
+            $em->flush();
+
+            /**
+             * Return with success code.
+             */
+            $clickToJson = new ClickSerializer($clickState);
+            $response->setContent(json_encode(
+                $clickToJson->toArrayWithAttribute(
+                    $clickState->getReadableAttributes()
+                )));
+            $response->setStatusCode(201);
+            return $response;
+        }
+        catch(\Exception $e){
+            $response->setStatusCode(409);
+            return $response;
+        }
     }
 
+
+    /**
+     * Update click
+     *
+     */
+
+    public function update(Application $app, Request $request, $id)
+    {
+        $em = $app['orm.em'];
+        $table = $em->getRepository('VuBa\Entities\Click');
+
+        $postedData = $request->getContent();
+        $postedData = StringHelper::utf8_converter($postedData);
+
+        $rawData = json_decode($postedData, true);
+        //$test = StringHelper::utf8_converter($test);
+
+        if(!isset($id) || empty($id))
+        {
+            $app->abort(401, 'Click is not existed');
+        }
+
+        $clickObject = $table->find($id);
+        if( !($clickObject instanceof Click) )
+        {
+            $app->abort(402, 'Click is not existed');
+        }
+
+        $clickFactory = new ClickFactory($clickObject);
+        $clickState = $clickFactory->getClick();
+        //var_dump($clickState->getClick());
+        $clickState->setClickAttributes($rawData);
+        //var_dump($clickState->getClick());
+
+        $validator = $app['validator'];
+        $violations = $validator->validate($clickState->getClick());
+        $response = new \Symfony\Component\HttpFoundation\JsonResponse();
+        $errorMsg = '';
+        if (0 !== count($violations)) {
+            // there are errors, now you can show them
+            foreach ($violations as $violation) {
+                //echo $violation->getMessage().'<br>';
+                $errorMsg .= $violation->getMessage();
+            }
+            $response->setContent(json_encode($errorMsg));
+            $response->setStatusCode(405);
+            return $response;
+        }
+
+        try
+        {
+            $em->persist($clickState->getClick());
+            $em->flush();
+
+            /**
+             * Return with success code.
+             */
+            $clickToJson = new ClickSerializer($clickState);
+            $response->setContent(json_encode(
+                $clickToJson->toArrayWithAttribute(
+                    $clickState->getReadableAttributes()
+                )));
+            $response->setStatusCode(201);
+            return $response;
+        }
+        catch(\Exception $e){
+            $response->setStatusCode(409);
+            return $response;
+        }
+    }
 
 }
