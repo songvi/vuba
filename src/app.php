@@ -12,7 +12,7 @@ use Silex\Provider\HttpFragmentServiceProvider;
 use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 use Saxulum\Validator\Provider\SaxulumValidatorProvider;
 use Symfony\Component\Validator\Validator;
-
+use VuBa\Services\ResponseService;
 
 $app = new Application();
 
@@ -20,12 +20,16 @@ $app->register(new RoutingServiceProvider());
 $app->register(new ValidatorServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
 //$app->register(new TwigServiceProvider());
-$app->register(new FormServiceProvider());
+//$app->register(new FormServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
 $app->register(new Silex\Provider\LocaleServiceProvider());
 $app->register(new Silex\Provider\TranslationServiceProvider(), array(
     'locale_fallbacks' => array('en'),
 ));
+
+require_once __DIR__.'/VuBa/Services/ResponseService.php';
+
+$app->register(new Vuba\Services\ResponseService());
 
 $app->register(new TranslationServiceProvider(), array(
     'translator.domains' => array(),

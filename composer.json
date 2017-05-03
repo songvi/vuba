@@ -38,7 +38,7 @@
         "ramsey/uuid":"~3.6"
     },
     "autoload": {
-        "psr-0": {
+        "psr-4": {
             "": "src/"
         }
     },
