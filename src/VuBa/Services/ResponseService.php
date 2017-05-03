@@ -2,7 +2,11 @@
 
 namespace VuBa\Services;
 
-class ResponseService
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
+use Symfony\Component\HttpFoundation\Response;
+
+class ResponseService implements  ServiceProviderInterface
 {
     public $response;
 
@@ -10,9 +14,22 @@ class ResponseService
     const HTTP_CREATED      = 201;
     const HTTP_NO_CONTENT   = 204;
 
-    public function __construct($content, $code = 200, $format = 'json')
+
+    /**
+     * Registers services on the given container.
+     *
+     * This method should only be used to configure services and parameters.
+     * It should not get services.
+     *
+     * @param Container $pimple A container instance
+     */
+    public function register(Container $container)
     {
-        $this->response = new Response($content);
-        $this->response->setStatusCode($code);
+        $container['vuba.resp.http.ok'] = $container->protect(function ($content) use ($container)
+        {
+            $response = new Response($content);
+            $response->setStatusCode(self::HTTP_OK);
+            return $response;
+        });
     }
 }
