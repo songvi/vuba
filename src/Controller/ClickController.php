@@ -107,11 +107,12 @@ class ClickController implements ControllerProviderInterface {
                 $ret[$clickState->getClick()->getId()]= $clickToJson->toArray();
             }
         }
-
+/*
         $response = new \Symfony\Component\HttpFoundation\JsonResponse();
         $response->setContent(json_encode($ret));
         $response->setStatusCode(200);
-
+*/
+        $response = $app['vuba.http.resp.ok'](json_encode($ret));
         return $response;
     }
 
