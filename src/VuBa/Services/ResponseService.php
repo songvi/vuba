@@ -33,6 +33,10 @@ class ResponseService implements  ServiceProviderInterface
      */
     public function register(Container $container)
     {
+        //$basicResponse = new Response();
+        //$basicResponse->setCharset('');
+        //$basicResponse->set
+
         $container['vuba.http.resp.ok'] = $container->protect(function ($content) use ($container)
         {
             $response = new Response($content);
