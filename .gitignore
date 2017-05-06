@@ -1,3 +1,9 @@
 vendor
 composer.lock
 .idea/*
+.idea/.name
+.idea/deployment.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/silex-orm-skeleton.iml
+var/cache/orm.proxies/*
