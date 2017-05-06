@@ -1,0 +1,2 @@
+id,category,uuid,subject,created_at,modified_at,expired_at,description,clarification,click_type,state,is_private,priority,budget,accepted_proposal,finished_owner_comments,finished_worker_comments,finished_admin_comments
+1,IT,azerdktkdjtlddksjektkdlsldkgjtel,"First Create","2017-04-17 00:00:01","2017-04-17 00:00:01","2017-04-17 00:00:03","Just for tesing","No need",0,0,0,1,1.00,1,NULL,NULL,NULL
