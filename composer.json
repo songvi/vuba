@@ -35,6 +35,7 @@
         "moust/silex-cache": "dev-master",
         "dflydev/doctrine-orm-service-provider": "~2.0@dev",
         "saxulum/saxulum-validator-provider": "~2.0@dev",
+        "wixel/gump": "dev-master",
         "ramsey/uuid":"~3.6"
     },
     "autoload": {
