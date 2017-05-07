@@ -2,7 +2,6 @@
 
 namespace VuBa\Serialize;
 
-
 use VuBa\States\ClickState;
 use VuBa\Utilities\StringHelper;
 
@@ -34,8 +33,7 @@ class ClickSerializer implements \JsonSerializable
             'writable_att' => $writableAtt,
             'funcs'        => $funcLinks
         );
-
-        $ret = StringHelper::utf8_converter($ret);
+        //$ret = StringHelper::utf8_converter($ret);
         return $ret;
     }
 
@@ -55,9 +53,7 @@ class ClickSerializer implements \JsonSerializable
             'writable_att' => $writableAtt,
             'funcs'        => $funcLinks
         );
-
-        $ret = StringHelper::utf8_converter($ret);
-
+        //$ret = StringHelper::utf8_converter($ret);
         return $ret;
     }
 
@@ -65,8 +61,7 @@ class ClickSerializer implements \JsonSerializable
         $readableAtt = $this->clickState->getClick()->getByAttributes(
             $this->clickState->getReadableAttributes());
         $ret = array_intersect_key($readableAtt, array_flip($attributes));
-
-        $ret = StringHelper::utf8_converter($ret);
+        //$ret = StringHelper::utf8_converter($ret);
         return $ret;
     }
 }
