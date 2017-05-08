@@ -12,7 +12,8 @@ use Silex\Provider\HttpFragmentServiceProvider;
 use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 use Saxulum\Validator\Provider\SaxulumValidatorProvider;
 use Symfony\Component\Validator\Validator;
-use VuBa\Services\ResponseService;
+use Symfony\Component\HttpFoundation\Request;
+
 
 $app = new Application();
 
@@ -133,6 +134,33 @@ $app['vuba.context'] = null;
     var_dump($app['vuba.context']);
 });*/
 
+
+
+$app->before(function(Request $request) use ($app) {
+    // default language
+    $locale = 'en';
+    // quick and dirty ... try to detect the favorised language - to be improved!
+    if (!is_null($request->server->get('HTTP_ACCEPT_LANGUAGE'))) {
+        $langs = array();
+        // break up string into pieces (languages and q factors)
+        preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i',
+            $request->server->get('HTTP_ACCEPT_LANGUAGE'), $lang_parse);
+        if (count($lang_parse[1]) > 0) {
+            foreach ($lang_parse[1] as $lang) {
+                if (false === (strpos($lang, '-'))) {
+                    // only the country sign like 'de'
+                    $locale = strtolower($lang);
+                } else {
+                    // perhaps something like 'de-DE'
+                    $locale = strtolower(substr($lang, 0, strpos($lang, '-')));
+                }
+                break;
+            }
+        }
+        $app['translator']->setLocale($locale);
+        //$app['monolog']->addDebug('Set locale to '.$locale);
+    }
+});
 
 
 require __DIR__.'/routes.php';
