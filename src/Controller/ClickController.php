@@ -112,6 +112,10 @@ class ClickController implements ControllerProviderInterface {
         $response->setContent(json_encode($ret));
         $response->setStatusCode(200);
 */
+        if(count($ret) === 0)
+        {
+            $ret = array($app['translator']->trans('There is currently no record'));
+        }
         $response = $app['vuba.http.resp.ok'](json_encode($ret));
         return $response;
     }
@@ -142,7 +146,7 @@ class ClickController implements ControllerProviderInterface {
         $entity = $em->getRepository('VuBa\Entities\Click')->find($id);
 
         if (!$entity) {
-            $app->abort(404, 'No entity found for id '.$id);
+            $app->abort(404, $app['translator']->trans(1).$id);
         }
 
         $arrAttributes = $request->query->get('a');

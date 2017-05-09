@@ -20,8 +20,6 @@ $app = new Application();
 $app->register(new RoutingServiceProvider());
 $app->register(new ValidatorServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
-//$app->register(new TwigServiceProvider());
-//$app->register(new FormServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
 $app->register(new Silex\Provider\LocaleServiceProvider());
 $app->register(new Silex\Provider\TranslationServiceProvider(), array(
@@ -35,6 +33,27 @@ $app->register(new Vuba\Services\ResponseService());
 $app->register(new TranslationServiceProvider(), array(
     'translator.domains' => array(),
 ));
+
+//$app['autoloader']->registerNamespace('Symfony', __DIR__.'/../vendor/Symfony/src');
+
+$app['translator.loader'] = new Symfony\Component\Translation\Loader\ArrayLoader();
+$arrayEN = include __DIR__.'/VuBa/Resources/i18n/en.php';
+$arrayFR = include __DIR__.'/VuBa/Resources/i18n/fr.php';
+$arrayVI = include __DIR__.'/VuBa/Resources/i18n/vi.php';
+$arrayES = include __DIR__.'/VuBa/Resources/i18n/es.php';
+$arrayDE = include __DIR__.'/VuBa/Resources/i18n/de.php';
+$arrayJP = include __DIR__.'/VuBa/Resources/i18n/jp.php';
+
+$app['translator']->addResource('array', $arrayEN, 'en');
+$app['translator']->addResource('array', $arrayFR, 'fr');
+$app['translator']->addResource('array', $arrayVI, 'vi');
+$app['translator']->addResource('array', $arrayES, 'es');
+$app['translator']->addResource('array', $arrayDE, 'de');
+$app['translator']->addResource('array', $arrayJP, 'jp');
+$app['locales.all'] = include __DIR__.'/VuBa/Resources/i18n/locales.php';
+$app['locales.supported'] = ['vi', 'en', 'fr'];
+
+
 
 $app->register(new SessionServiceProvider(), array(
   'session.storage.options' => array('cookie_lifetime' => 10800)
@@ -51,18 +70,19 @@ $app->register(new DoctrineServiceProvider(), array(
 ));
 
 
-/*$app->register(new Moust\Silex\Provider\CacheServiceProvider(), array(
+$app->register(new Moust\Silex\Provider\CacheServiceProvider(), array(
     'caches.options' => array(
-//        'apcu' => array(
-//            'driver' => 'apcu'
-//        ),
+        'apcu' => array(
+            'driver' => 'apcu'
+        )
+    /*,
         'filesystem' => array(
             'driver' => 'file',
             'cache_dir' => '../var/cache/tmp'
         ),
         'memory' => array(
             'driver' => 'array'
-        )
+        )*/
     )
 ));
 // stores a variable
@@ -74,7 +94,7 @@ $app['cache']->store('foo', 'bar', 60);
 // delete variable
 $app['cache']->delete('foo');
 // clear all cached variables
-$app['cache']->clear();*/
+$app['cache']->clear();
 
 
 $app->register(new Silex\Provider\SerializerServiceProvider());
@@ -156,6 +176,12 @@ $app->before(function(Request $request) use ($app) {
                 }
                 break;
             }
+        }
+
+
+        if(!in_array($locale, $app['locales.supported']))
+        {
+            $locale = 'en';
         }
         $app['translator']->setLocale($locale);
         //$app['monolog']->addDebug('Set locale to '.$locale);

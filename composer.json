@@ -36,7 +36,8 @@
         "dflydev/doctrine-orm-service-provider": "~2.0@dev",
         "saxulum/saxulum-validator-provider": "~2.0@dev",
         "wixel/gump": "dev-master",
-        "ramsey/uuid":"~3.6"
+        "ramsey/uuid":"~3.6",
+        "php-amqplib/php-amqplib": "2.6.*"
     },
     "autoload": {
         "psr-4": {
