@@ -54,41 +54,12 @@ class ClickController implements ControllerProviderInterface {
         //var_dump($em);
         $table = $em->getRepository('VuBa\Entities\Click');
 
-        $pageNumber = $request->query->get('p');
-        $numberPerPage = $request->query->get('n');
-        $arrAttributes = $request->query->get('a');
-
-        $attributes = null;
-        if(!empty($arrAttributes))
-        {
-            $attributes =  explode(',', $arrAttributes);
-        }
-
-        $pNumber = 1;
-        if (!empty($pageNumber) &&
-            is_numeric($pageNumber) &&
-            $numberPerPage !== 0 )
-            {
-                $pNumber = $pageNumber;
-            }
-
-        $limit = 20;
-
-        if (!empty($numberPerPage) &&
-            is_numeric($numberPerPage) &&
-            $numberPerPage > 0 )
-            {
-                $limit = $numberPerPage;
-            }
-
-        $offset = ($pNumber - 1) * $limit;
-        //$total = $table->countClick();
-        //$maxPageNumber = ceil($total / $limit);
+        $pagingInfo = $this->pagingInfo($request);
 
         $criteria = Criteria::create()
             ->orderBy(array('created_at'=> Criteria::DESC))
-            ->setFirstResult($offset)
-            ->setMaxResults($limit);
+            ->setFirstResult($pagingInfo['offset'])
+            ->setMaxResults($pagingInfo['limit']);
 
 
         $entities = $table->matching($criteria);
@@ -99,9 +70,9 @@ class ClickController implements ControllerProviderInterface {
             $clickFactory = new ClickFactory($entitie);
             $clickState = $clickFactory->getClick();
             $clickToJson = new ClickSerializer($clickState);
-            if(is_array($attributes) && count($attributes) > 0)
+            if(is_array($pagingInfo['attributes']) && count($pagingInfo['attributes']) > 0)
             {
-                $ret[$clickState->getClick()->getId()]= $clickToJson->toArrayWithAttribute($attributes);
+                $ret[$clickState->getClick()->getId()]= $clickToJson->toArrayWithAttribute($pagingInfo['attributes']);
             }
             else{
                 $ret[$clickState->getClick()->getId()]= $clickToJson->toArray();
@@ -116,7 +87,10 @@ class ClickController implements ControllerProviderInterface {
         {
             $ret = array($app['translator']->trans('There is currently no record'));
         }
-        $response = $app['vuba.http.resp.ok'](json_encode($ret));
+
+        $ret = StringHelper::utf8_converter($ret);
+        $content = json_encode($ret, JSON_PRETTY_PRINT);
+        $response = $app['vuba.http.resp.ok']($content);
         return $response;
     }
 
@@ -316,4 +290,44 @@ class ClickController implements ControllerProviderInterface {
         }
     }
 
+    protected function pagingInfo(Request $request){
+        $pageNumber = $request->query->get('p');
+        $numberPerPage = $request->query->get('n');
+        $arrAttributes = $request->query->get('a');
+
+        $limit = 20;
+        $pNumber = 1;
+
+        $attributes = null;
+        if(!empty($arrAttributes))
+        {
+            $attributes =  explode(',', $arrAttributes);
+        }
+
+
+        if (!empty($pageNumber) &&
+            is_numeric($pageNumber) &&
+            $numberPerPage !== 0 )
+        {
+            $pNumber = $pageNumber;
+        }
+
+
+
+        if (!empty($numberPerPage) &&
+            is_numeric($numberPerPage) &&
+            $numberPerPage > 0 )
+        {
+            $limit = $numberPerPage;
+        }
+
+        $offset = ($pNumber - 1) * $limit;
+
+        return array(
+            'currentPage'            => $pNumber,
+            'limit'         => $limit,
+            'offset'                => $offset,
+            'attributes'            => $attributes
+        );
+    }
 }
