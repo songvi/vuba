@@ -27,8 +27,12 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
 ));
 
 require_once __DIR__.'/VuBa/Services/ResponseService.php';
+require_once __DIR__.'/VuBa/Services/Attachment/AbstractAttachment.php';
+require_once __DIR__.'/VuBa/Services/AttachmentStorage.php';
 
-$app->register(new Vuba\Services\ResponseService());
+$app->register(new Vuba\Services\ResponseService(), array(
+    'attachment.working.dir' => __DIR__.'../var/attachments',
+    'attachment.storage.type' => 'file'));
 
 $app->register(new TranslationServiceProvider(), array(
     'translator.domains' => array(),
@@ -43,6 +47,7 @@ $arrayVI = include __DIR__.'/VuBa/Resources/i18n/vi.php';
 $arrayES = include __DIR__.'/VuBa/Resources/i18n/es.php';
 $arrayDE = include __DIR__.'/VuBa/Resources/i18n/de.php';
 $arrayJP = include __DIR__.'/VuBa/Resources/i18n/jp.php';
+
 
 $app['translator']->addResource('array', $arrayEN, 'en');
 $app['translator']->addResource('array', $arrayFR, 'fr');
@@ -69,6 +74,8 @@ $app->register(new DoctrineServiceProvider(), array(
     ),
 ));
 
+
+$app->register(new VuBa\Services\AttachmentStorage());
 
 $app->register(new Moust\Silex\Provider\CacheServiceProvider(), array(
     'caches.options' => array(
