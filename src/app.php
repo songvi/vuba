@@ -13,6 +13,7 @@ use Dflydev\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 use Saxulum\Validator\Provider\SaxulumValidatorProvider;
 use Symfony\Component\Validator\Validator;
 use Symfony\Component\HttpFoundation\Request;
+use SilexFriends\Uuid\Uuid;
 
 
 $app = new Application();
@@ -25,6 +26,7 @@ $app->register(new Silex\Provider\LocaleServiceProvider());
 $app->register(new Silex\Provider\TranslationServiceProvider(), array(
     'locale_fallbacks' => array('en'),
 ));
+
 
 require_once __DIR__.'/VuBa/Services/ResponseService.php';
 require_once __DIR__.'/VuBa/Services/Attachment/AbstractAttachment.php';
@@ -79,30 +81,11 @@ $app->register(new VuBa\Services\AttachmentStorage());
 
 $app->register(new Moust\Silex\Provider\CacheServiceProvider(), array(
     'caches.options' => array(
-        'apcu' => array(
-            'driver' => 'apcu'
-        )
-    /*,
-        'filesystem' => array(
-            'driver' => 'file',
-            'cache_dir' => '../var/cache/tmp'
-        ),
-        'memory' => array(
-            'driver' => 'array'
-        )*/
+          'apcu' => array(
+              'driver' => 'apcu'
+          )
     )
 ));
-// stores a variable
-$app['cache']->store('foo', 'bar');
-// stores a variable with a 1 minute lifetime
-$app['cache']->store('foo', 'bar', 60);
-// fetch variable
-//echo $app['cache']->fetch('foo');
-// delete variable
-$app['cache']->delete('foo');
-// clear all cached variables
-$app['cache']->clear();
-
 
 $app->register(new Silex\Provider\SerializerServiceProvider());
 
@@ -161,7 +144,7 @@ $app['vuba.context'] = null;
     var_dump($app['vuba.context']);
 });*/
 
-
+$app->register(new Uuid());
 
 $app->before(function(Request $request) use ($app) {
     // default language

@@ -37,7 +37,8 @@
         "saxulum/saxulum-validator-provider": "~2.0@dev",
         "wixel/gump": "dev-master",
         "ramsey/uuid":"~3.6",
-        "php-amqplib/php-amqplib": "2.6.*"
+        "php-amqplib/php-amqplib": "2.6.*",
+        "mrprompt/silex-uuid" : "dev-master"
     },
     "autoload": {
         "psr-4": {

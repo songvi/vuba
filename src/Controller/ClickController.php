@@ -116,12 +116,19 @@ class ClickController implements ControllerProviderInterface {
      */
     public function show(Application $app, Request $request, $id) {
 
-        $em = $app['orm.em'];
-        $entity = $em->getRepository('VuBa\Entities\Click')->find($id);
+        $entity = $app['cache']->fetch('click_'.$id);
+        if(empty($entity))
+        {
+            $em = $app['orm.em'];
+            $entity = $em->getRepository('VuBa\Entities\Click')->find($id);
 
-        if (!$entity) {
-            $app->abort(404, $app['translator']->trans(1).$id);
+            if (!$entity) {
+                $app->abort(404, $app['translator']->trans(1).$id);
+            }
+
+            $app['cache']->store('click_'.$id, $entity);
         }
+
 
         $arrAttributes = $request->query->get('a');
 
@@ -154,7 +161,7 @@ class ClickController implements ControllerProviderInterface {
      */
     public function create(Application $app, Request $request)
     {
-        $uuid = '3F2504E0-4F89-11D3-9A0C-0305E82C3301';
+        $uuid = $app['uuid.generate']();
 
         $test = $request->getContent();
         $newClick = new Click();
