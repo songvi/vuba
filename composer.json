@@ -3,7 +3,7 @@
     "description": "A pre-configured skeleton for the Silex microframework with doctrine ORM and bootstrap config.",
     "keywords": ["silex", "skeleton", "bootstrap", "doctrine", "orm", "database", "extension", "provider"],
     "license": "MIT",
-    "homepage": "https://github.com/fredjuvaux/silex-orm-skeleton",
+    "homepage": "https://github.com/songvi/vuba",
     "authors": [
         { 
             "name": "Fred Juvaux",
@@ -43,11 +43,6 @@
     "autoload": {
         "psr-4": {
             "": "src/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.1.x-dev"
         }
     }
 }
