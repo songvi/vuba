@@ -1,5 +1,5 @@
 {
-    "name": "fredjuvaux/silex-orm-skeleton",
+    "name": "vuba/silex-skeleton",
     "description": "A pre-configured skeleton for the Silex microframework with doctrine ORM and bootstrap config.",
     "keywords": ["silex", "skeleton", "bootstrap", "doctrine", "orm", "database", "extension", "provider"],
     "license": "MIT",
